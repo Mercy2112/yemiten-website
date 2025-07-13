@@ -1,774 +1,1664 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yemiten Recipe Tube - Authentic Ethiopian & International Cuisine</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        // Initialize Tailwind dark mode
-        tailwind.config = {
-            darkMode: 'class',
-        }
-    </script>
+    <title>Yemiten Recipe Tube - Ethiopian & International Cooking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #fdfcfa;
+            line-height: 1.6;
+            color: #1a1a1a;
             overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        
-        .dark body {
-            background-color: #111827;
         }
 
-        h1, h2, h3, h4, .font-serif {
-            font-family: 'Playfair Display', serif;
+        body.menu-open {
+            overflow: hidden;
         }
 
-        /* Scroll Progress Bar */
-        #progressBar {
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
             position: fixed;
+            width: 100%;
             top: 0;
+            z-index: 10000;
+            padding: 1.2rem 0;
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.8rem 0;
+            box-shadow: 0 8px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 120px;
+            height: 45px;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+            transition: all 0.4s ease;
+            object-fit: contain;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(231, 76, 60, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
             left: 0;
-            width: 0%;
-            height: 4px;
-            background: linear-gradient(90deg, #c53030, #e53e3e);
-            z-index: 1000;
-            transition: width 0.1s linear;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            transition: width 0.3s ease;
         }
 
-        /* Header shadow on scroll */
-        .header-scrolled {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-        }
-        .dark .header-scrolled {
-            background-color: rgba(17, 24, 39, 0.9);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        .nav-links a:hover {
+            color: #e74c3c;
+            transform: translateY(-1px);
         }
 
-        /* Custom gradient button with enhanced hover effects */
-        .btn-gradient {
-            background: linear-gradient(to right, #e53e3e, #c53030);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            color: white;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 30px rgba(231, 76, 60, 0.3);
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
-        .btn-gradient:hover {
-            transform: translateY(-5px) scale(1.03);
-            box-shadow: 0 12px 24px rgba(220, 38, 38, 0.4);
-        }
-        .btn-gradient::after {
+
+        .cta-btn::before {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 150%;
-            height: 150%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
-            transform: translate(-50%, -50%) scale(0);
-            transition: transform 0.5s ease;
-        }
-        .btn-gradient:hover::after {
-            transform: translate(-50%, -50%) scale(1);
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
         }
 
-        /* Section divider */
-        .section-divider {
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(to right, #ef4444, #dc2626);
-            margin: 1rem auto 3rem auto;
-            border-radius: 2px;
+        .cta-btn:hover::before {
+            left: 100%;
         }
 
-        /* --- Animation Classes --- */
-        .reveal {
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu {
+            display: none;
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: white;
+            z-index: 10001;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+            font-size: 1.2rem;
+        }
+
+        .mobile-menu:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(231, 76, 60, 0.4);
+        }
+
+        .mobile-menu i {
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu.active i {
+            transform: rotate(90deg);
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.98) 0%, 
+                rgba(248, 249, 250, 0.98) 100%);
+            backdrop-filter: blur(40px);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            transform: translateY(-100%);
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            visibility: hidden;
+            transition: all 0.6s ease;
+            padding: 2rem;
+            overflow-y: auto;
         }
-        .reveal.animate {
-            opacity: 1;
+
+        .mobile-menu-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(231, 76, 60, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(243, 156, 18, 0.08) 0%, transparent 50%);
+            animation: gradientShift 15s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        .mobile-menu-overlay.active {
             transform: translateY(0);
-        }
-        .reveal-group .reveal:nth-child(1) { transition-delay: 100ms; }
-        .reveal-group .reveal:nth-child(2) { transition-delay: 200ms; }
-        .reveal-group .reveal:nth-child(3) { transition-delay: 300ms; }
-        .reveal-group .reveal:nth-child(4) { transition-delay: 400ms; }
-
-        /* Card hover effect */
-        .card-hover-effect {
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        .card-hover-effect:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
-        }
-        .dark .card-hover-effect:hover {
-             box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+            opacity: 1;
+            visibility: visible;
         }
 
-        /* Mobile Menu as a dropdown */
-        #mobile-menu {
-            transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            max-height: 0;
+        .mobile-menu-overlay a {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            text-decoration: none;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            position: relative;
+            padding: 0.8rem 2rem;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .mobile-menu-overlay a:hover {
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            color: white;
+            transform: translateY(0) scale(1.05);
+        }
+
+        .mobile-menu-overlay.active a {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .mobile-menu-overlay.active a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu-overlay.active a:nth-child(2) { transition-delay: 0.2s; }
+        .mobile-menu-overlay.active a:nth-child(3) { transition-delay: 0.3s; }
+        .mobile-menu-overlay.active a:nth-child(4) { transition-delay: 0.4s; }
+        .mobile-menu-overlay.active a:nth-child(5) { transition-delay: 0.5s; }
+        .mobile-menu-overlay.active a:nth-child(6) { transition-delay: 0.6s; }
+
+        .mobile-menu-overlay .cta-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            color: white;
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            margin-top: 0.5rem;
+            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.3);
+        }
+
+        .mobile-menu-overlay .cta-btn:hover {
+            transform: translateY(0) scale(1.1);
+            box-shadow: 0 20px 50px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes floatAround {
+            0%, 100% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg); 
+                opacity: 0.1;
+            }
+            25% { 
+                transform: translateY(-30px) translateX(20px) rotate(90deg); 
+                opacity: 0.2;
+            }
+            50% { 
+                transform: translateY(-15px) translateX(-15px) rotate(180deg); 
+                opacity: 0.15;
+            }
+            75% { 
+                transform: translateY(-40px) translateX(25px) rotate(270deg); 
+                opacity: 0.18;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 100px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(231, 76, 60, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(243, 156, 18, 0.15) 0%, transparent 50%);
+            animation: gradientShift 20s ease-in-out infinite;
+        }
+
+        .floating-icons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: floatAround 15s ease-in-out infinite;
+            color: white;
+        }
+
+        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 20%; right: 15%; animation-delay: -3s; }
+        .floating-icon:nth-child(3) { bottom: 30%; left: 15%; animation-delay: -6s; }
+        .floating-icon:nth-child(4) { bottom: 20%; right: 20%; animation-delay: -9s; }
+        .floating-icon:nth-child(5) { top: 60%; left: 5%; animation-delay: -12s; }
+        .floating-icon:nth-child(6) { top: 70%; right: 10%; animation-delay: -15s; }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(20px);
+            font-weight: 500;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin: 4rem 0;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            min-width: 140px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .stat:nth-child(2) { animation-delay: 1s; }
+        .stat:nth-child(3) { animation-delay: 2s; }
+
+        .stat:hover {
+            transform: translateY(-15px) scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            display: block;
+            color: #f39c12;
+            margin-bottom: 0.5rem;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 3rem;
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+
+        .btn {
+            padding: 1.3rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
             overflow: hidden;
         }
 
-        /* Modal styles */
-        .modal {
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-        }
-        .modal-content {
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        .modal.is-open .modal-content {
-            transform: scale(1) translateY(0);
-        }
-
-        /* Testimonial fade transition */
-        .testimonial-item {
+        .btn::before {
+            content: '';
             position: absolute;
-            width: 100%;
-            left: 0;
             top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            color: white;
+            box-shadow: 0 12px 40px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(231, 76, 60, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.95);
+            color: #667eea;
+            border-color: rgba(255, 255, 255, 0.95);
+            transform: translateY(-4px);
+        }
+
+        /* Founder Section */
+        .founder-section {
+            padding: 8rem 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            position: relative;
+        }
+
+        .founder-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .founder-image {
+            position: relative;
+            animation: slideInLeft 1s ease-out both;
+        }
+
+        .founder-photo {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 25px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+        }
+
+        .founder-photo:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.25);
+        }
+
+        .founder-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .founder-text {
+            animation: slideInRight 1s ease-out both;
+        }
+
+        .founder-text h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .founder-text h3 {
+            font-size: 1.4rem;
+            color: #e74c3c;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .founder-text p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+
+        .founder-achievements {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .achievement {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+        }
+
+        .achievement:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(231, 76, 60, 0.15);
+        }
+
+        .achievement-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+            animation: rotate 20s linear infinite;
+        }
+
+        /* Sections */
+        .section {
+            padding: 8rem 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: #2c3e50;
+            font-weight: 800;
+            letter-spacing: -1px;
+            position: relative;
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            border-radius: 2px;
+        }
+
+        /* About */
+        .about {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #555;
+            animation: slideInLeft 1s ease-out 0.3s both;
+        }
+
+        .about-text p {
+            margin-bottom: 2rem;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
-        }
-        .testimonial-item.active {
-            opacity: 1;
+            animation: fadeInUp 1s ease-out both;
         }
 
-        /* Animated background for services */
-        #services {
-            background-image: radial-gradient(#fde2e2 1px, transparent 1px);
-            background-size: 20px 20px;
-            animation: background-pan 30s linear infinite;
-        }
-        .dark #services {
-            background-image: radial-gradient(#372525 1px, transparent 1px);
-        }
-        @keyframes background-pan {
-            from { background-position: 0 0; }
-            to { background-position: -400px 0; }
+        .about-text p:nth-child(1) { animation-delay: 0.5s; }
+        .about-text p:nth-child(2) { animation-delay: 0.7s; }
+        .about-text p:nth-child(3) { animation-delay: 0.9s; }
+
+        .about-text p:first-child {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #2c3e50;
         }
 
-        /* Dark mode toggle */
-        #theme-toggle .fa-sun { display: none; }
-        .dark #theme-toggle .fa-sun { display: block; }
-        .dark #theme-toggle .fa-moon { display: none; }
+        .about-image {
+            text-align: center;
+            padding: 4rem 3rem;
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            border-radius: 30px;
+            color: white;
+            box-shadow: 0 30px 80px rgba(231, 76, 60, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: slideInRight 1s ease-out 0.3s both;
+        }
 
+        .about-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 40px 100px rgba(231, 76, 60, 0.4);
+        }
+
+        .about-image i {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .about-image h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .about-image p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Services */
+        .services {
+            background: #ffffff;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+
+        .service-card {
+            background: #ffffff;
+            padding: 3rem 2.5rem;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .service-card:nth-child(1) { animation-delay: 0.2s; }
+        .service-card:nth-child(2) { animation-delay: 0.4s; }
+        .service-card:nth-child(3) { animation-delay: 0.6s; }
+
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 40px 100px rgba(231, 76, 60, 0.15);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.3);
+            position: relative;
+            z-index: 2;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .service-card h3 {
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .service-card p {
+            line-height: 1.8;
+            color: #666;
+            font-size: 1.05rem;
+            flex-grow: 1;
+        }
+
+        /* Classes */
+        .classes {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+
+        .class-card {
+            background: #ffffff;
+            padding: 3rem 2.5rem;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .class-card:nth-child(1) { 
+            animation-delay: 0.2s; 
+            animation-name: slideInLeft;
+        }
+        .class-card:nth-child(2) { 
+            animation-delay: 0.4s; 
+        }
+        .class-card:nth-child(3) { 
+            animation-delay: 0.6s; 
+            animation-name: slideInRight;
+        }
+
+        .class-card.popular {
+            border-color: #e74c3c;
+            transform: scale(1.05);
+        }
+
+        .class-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(231, 76, 60, 0.2);
+        }
+
+        .class-card.popular:hover {
+            transform: translateY(-10px) scale(1.07);
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .class-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .features {
+            list-style: none;
+            text-align: left;
+            margin: 2rem 0;
+            flex-grow: 1;
+        }
+
+        .features li {
+            padding: 0.8rem 0;
+            position: relative;
+            padding-left: 2rem;
+            font-size: 1.05rem;
+            color: #555;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .features li:before {
+            content: "✓";
+            color: #27ae60;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: rgba(39, 174, 96, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .class-card .btn {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        /* Contact */
+        .contact {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(231, 76, 60, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(243, 156, 18, 0.1) 0%, transparent 50%);
+        }
+
+        .contact .section-title {
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .contact-form {
+            max-width: 700px;
+            margin: 3rem auto 0;
+            display: grid;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 1.3rem 1.5rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            font-size: 1.05rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #e74c3c;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group select option {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            color: white;
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
+            color: white;
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-logo img {
+            width: 140px;
+            height: 50px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+            object-fit: contain;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.4);
+        }
+
+        .developer-credit {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .developer-credit i {
+            color: #e74c3c;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 120px;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+                letter-spacing: -1px;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 2rem;
+                align-items: center;
+            }
+
+            .stat {
+                min-width: 200px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .btn {
+                padding: 1.2rem 2.5rem;
+                font-size: 1rem;
+            }
+
+            .founder-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .founder-image {
+                order: -1;
+            }
+
+            .founder-achievements {
+                grid-template-columns: 1fr;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .services-grid,
+            .classes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .class-card.popular {
+                transform: none;
+            }
+
+            .class-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .floating-icon {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            .about-image {
+                padding: 3rem 2rem;
+            }
+
+            .service-card,
+            .class-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .mobile-menu-overlay a {
+                font-size: 1.1rem;
+                padding: 0.7rem 1.5rem;
+            }
+        }
     </style>
 </head>
-<body class="text-gray-700 dark:text-gray-300">
-
-    <!-- Scroll Progress Bar -->
-    <div id="progressBar"></div>
-
-    <!-- Header Section -->
-    <header id="main-header" class="bg-white/80 dark:bg-gray-900/80 py-4 px-6 md:px-12 flex justify-between items-center fixed w-full z-50 transition-all duration-300">
-        <a href="#home" class="flex items-center space-x-2">
-            <img src="https://i.postimg.cc/0K7wkZfJ/logo.png" alt="Yemiten Recipe Tube Logo" class="h-12 w-auto object-contain" onerror="this.onerror=null;this.src='https://placehold.co/100x48/c53030/ffffff?text=LOGO';">
-        </a>
-        <nav class="hidden md:flex space-x-8 items-center">
-            <a href="#about" class="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 font-medium transition duration-300">About</a>
-            <a href="#recipes" class="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 font-medium transition duration-300">Recipes</a>
-            <a href="#services" class="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 font-medium transition duration-300">Services</a>
-            <a href="#partnerships" class="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 font-medium transition duration-300">Partnerships</a>
-            <a href="#contact" class="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 font-medium transition duration-300">Contact</a>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">
+                <img src="https://i.postimg.cc/4HXfDTWq/logo.jpg" alt="Logo">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#classes">Classes</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#classes" class="cta-btn">Get Started</a></li>
+            </ul>
+            <button class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
-        <div class="flex items-center space-x-4">
-             <a href="https://www.youtube.com/@YemitenRecipeTube" target="_blank" class="btn-gradient text-white font-bold py-2 px-5 rounded-full shadow-md transition duration-300 hidden sm:flex items-center">
-                <i class="fab fa-youtube mr-2"></i>Subscribe
-            </a>
-            <button id="theme-toggle" class="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 w-8 h-8 rounded-full flex items-center justify-center">
-                <i class="fas fa-moon text-lg"></i>
-                <i class="fas fa-sun text-lg"></i>
-            </button>
-            <button id="mobile-menu-toggle" class="md:hidden text-gray-700 dark:text-gray-300 focus:outline-none z-50">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
-        </div>
     </header>
-    
-    <!-- Mobile Menu Dropdown -->
-    <div id="mobile-menu" class="md:hidden bg-white dark:bg-gray-800 shadow-lg pt-20">
-        <div class="flex flex-col items-center justify-center h-full space-y-6 pb-8">
-            <a href="#about" class="mobile-nav-link text-xl font-semibold text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-500">About</a>
-            <a href="#recipes" class="mobile-nav-link text-xl font-semibold text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-500">Recipes</a>
-            <a href="#services" class="mobile-nav-link text-xl font-semibold text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-500">Services</a>
-            <a href="#partnerships" class="mobile-nav-link text-xl font-semibold text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-500">Partnerships</a>
-            <a href="#contact" class="mobile-nav-link text-xl font-semibold text-gray-700 dark:text-gray-200 hover:text-red-600 dark:hover:text-red-500">Contact</a>
-             <a href="https://www.youtube.com/@YemitenRecipeTube" target="_blank" class="btn-gradient text-white font-bold py-3 px-8 rounded-full shadow-lg mt-4 flex items-center">
-                <i class="fab fa-youtube mr-2"></i>Subscribe
-            </a>
-        </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#classes">Classes</a>
+        <a href="#contact">Contact</a>
+        <a href="#classes" class="cta-btn">Get Started</a>
     </div>
 
+    <section class="hero" id="home">
+        <div class="floating-icons">
+            <div class="floating-icon">🌶️</div>
+            <div class="floating-icon">🧄</div>
+            <div class="floating-icon">🧅</div>
+            <div class="floating-icon">🥕</div>
+            <div class="floating-icon">🍅</div>
+            <div class="floating-icon">🌿</div>
+        </div>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="home" class="relative h-screen flex items-center justify-center text-center text-white p-6 pt-24 md:pt-32 bg-gray-900">
-            <video autoplay loop muted playsinline class="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-20">
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-chef-preparing-a-gourmet-dish-43952-large.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-50 z-10"></div>
-            <div class="relative z-20 max-w-4xl mx-auto reveal">
-                <h1 class="text-5xl md:text-7xl font-serif font-bold leading-tight mb-4 text-shadow-lg">
-                    A Taste of Tradition, A World of Flavor
-                </h1>
-                <p class="text-xl md:text-2xl mb-8 text-gray-200">
-                    Join <span class="font-bold text-red-400">200,000+ subscribers</span> on a culinary journey through authentic Ethiopian and diverse International recipes.
-                </p>
-                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-                    <a href="#recipes" class="btn-gradient text-white font-bold py-4 px-10 rounded-full shadow-lg text-lg">
-                        Explore Recipes
-                    </a>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-fire"></i>
+                <span>200K+ Subscribers Strong</span>
+            </div>
+            <h1>Master Ethiopian & Global Cuisine</h1>
+            <p>Join 200,000+ home cooks learning authentic recipes through our comprehensive tutorials and live classes</p>
+            
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">200K+</span>
+                    <span class="stat-label">Subscribers</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Videos</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5M+</span>
+                    <span class="stat-label">Views</span>
                 </div>
             </div>
-        </section>
 
-        <!-- About Us Section -->
-        <section id="about" class="py-24 px-6 md:px-12 bg-white dark:bg-gray-900">
-            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center reveal-group">
-                <div class="reveal">
-                    <img src="https://i.postimg.cc/zbQmjZ9T/chef-cooking.png" alt="Founder of Yemiten Recipe Tube" class="rounded-lg shadow-xl w-full h-auto object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x700/fca5a5/ffffff?text=Founder';">
-                </div>
-                <div class="text-left reveal">
-                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 dark:text-white mb-6">Our Culinary Story</h2>
-                    <p class="text-lg leading-relaxed mb-6">
-                        Yemiten Recipe Tube is more than a cooking channel; it's a vibrant journey bringing the rich flavors of Ethiopia and diverse tastes of the world to your kitchen. We are dedicated to sharing authentic recipes, innovative techniques, and the pure joy of food.
-                    </p>
-                    <p class="text-lg leading-relaxed mb-8">
-                        Our mission is to inspire home cooks of all levels to explore new ingredients, master traditional dishes, and create unforgettable meals.
-                    </p>
-                    <a href="#contact" class="font-bold text-red-600 hover:text-red-800 dark:hover:text-red-400 transition duration-300 text-lg">
-                        Get In Touch <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
+            <div class="hero-buttons">
+                <a href="#classes" class="btn btn-primary">
+                    <i class="fas fa-play"></i>
+                    Start Learning
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <i class="fas fa-envelope"></i>
+                    Get In Touch
+                </a>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Featured Recipes Section -->
-        <section id="recipes" class="py-24 px-6 md:px-12 bg-gray-50 dark:bg-black/20">
-            <div class="max-w-7xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 dark:text-white mb-4 reveal">Popular Recipes</h2>
-                <div class="section-divider reveal"></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-group">
-                    <!-- Recipe Card 1 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden card-hover-effect reveal">
-                        <img src="https://images.unsplash.com/photo-1604329223835-23423588523a?q=80&w=2070&auto=format&fit=crop" alt="Doro Wat" class="w-full h-56 object-cover">
-                        <div class="p-6 text-left">
-                            <h3 class="text-2xl font-serif font-bold text-gray-900 dark:text-white mb-2">Authentic Doro Wat</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-4">The iconic Ethiopian spicy chicken stew, rich in flavor and tradition.</p>
-                            <button class="view-recipe-btn font-bold text-red-600 hover:text-red-800 dark:hover:text-red-400 transition duration-300" data-recipe-id="doro-wat">View Recipe <i class="fas fa-arrow-right ml-1"></i></button>
+    <!-- Founder Section -->
+    <section class="founder-section">
+        <div class="founder-content">
+            <div class="founder-image">
+                <div class="founder-badge">Chef & Founder</div>
+                <img src="https://i.postimg.cc/zbQmjZ9T/founder.jpg" alt="Founder" class="founder-photo">
+            </div>
+            <div class="founder-text">
+                <h2>Meet Our Founder</h2>
+                <h3>Passionate Chef & Culinary Educator</h3>
+                <p>With years of experience in traditional Ethiopian cooking and international cuisine, our founder has dedicated their life to preserving authentic recipes while making them accessible to home cooks worldwide.</p>
+                
+                <p>Starting from humble beginnings in their family kitchen, they've grown this platform into a trusted source for culinary education, reaching over 200,000 subscribers and millions of viewers globally.</p>
+                
+                <p>Their mission is simple: to bridge cultures through food, teaching not just recipes but the stories, traditions, and love that make each dish special.</p>
+                
+                <div class="founder-achievements">
+                    <div class="achievement">
+                        <div class="achievement-icon">
+                            <i class="fas fa-award"></i>
                         </div>
+                        <span>Featured Chef</span>
                     </div>
-                    <!-- Recipe Card 2 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden card-hover-effect reveal">
-                         <img src="https://images.unsplash.com/photo-1595295333158-4742f28fbd85?q=80&w=2080&auto=format&fit=crop" alt="Pasta Primavera" class="w-full h-56 object-cover">
-                        <div class="p-6 text-left">
-                            <h3 class="text-2xl font-serif font-bold text-gray-900 dark:text-white mb-2">Vibrant Pasta Primavera</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-4">A fresh and flavorful international pasta dish perfect for any season.</p>
-                             <button class="view-recipe-btn font-bold text-red-600 hover:text-red-800 dark:hover:text-red-400 transition duration-300" data-recipe-id="pasta">View Recipe <i class="fas fa-arrow-right ml-1"></i></button>
+                    <div class="achievement">
+                        <div class="achievement-icon">
+                            <i class="fas fa-book"></i>
                         </div>
+                        <span>Recipe Developer</span>
                     </div>
-                    <!-- Recipe Card 3 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden card-hover-effect reveal">
-                        <img src="https://images.unsplash.com/photo-1626501217314-346a45277f97?q=80&w=1974&auto=format&fit=crop" alt="Injera" class="w-full h-56 object-cover">
-                        <div class="p-6 text-left">
-                            <h3 class="text-2xl font-serif font-bold text-gray-900 dark:text-white mb-2">Mastering Injera</h3>
-                            <p class="text-gray-600 dark:text-gray-400 mb-4">The definitive guide to making perfect Ethiopian sourdough flatbread.</p>
-                            <button class="view-recipe-btn font-bold text-red-600 hover:text-red-800 dark:hover:text-red-400 transition duration-300" data-recipe-id="injera">View Recipe <i class="fas fa-arrow-right ml-1"></i></button>
+                    <div class="achievement">
+                        <div class="achievement-icon">
+                            <i class="fas fa-users"></i>
                         </div>
+                        <span>Community Builder</span>
+                    </div>
+                    <div class="achievement">
+                        <div class="achievement-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <span>Cultural Ambassador</span>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Services Section -->
-        <section id="services" class="py-24 px-6 md:px-12 bg-white dark:bg-gray-900 relative overflow-hidden">
-            <div class="max-w-6xl mx-auto text-center relative z-10">
-                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 dark:text-white mb-4 reveal">Our Offerings</h2>
-                <div class="section-divider reveal"></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 reveal-group">
-                    <!-- Online Cooking Classes Card -->
-                    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-8 text-center card-hover-effect reveal">
-                        <div class="text-red-600 mb-4">
-                            <i class="fas fa-chalkboard-teacher text-5xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-serif font-bold text-gray-900 dark:text-white mb-3">Online Cooking Classes</h3>
-                        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                            Elevate your culinary skills with our exclusive online classes. Learn directly from expert chefs and master intricate techniques.
-                        </p>
-                        <a href="#contact" class="font-bold text-red-600 hover:text-red-800 dark:hover:text-red-400 transition duration-300">Learn More <i class="fas fa-arrow-right ml-1"></i></a>
-                    </div>
-                    <!-- Partnerships Card -->
-                    <div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-lg p-8 text-center card-hover-effect reveal">
-                        <div class="text-red-600 mb-4">
-                            <i class="fas fa-handshake text-5xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-serif font-bold text-gray-900 dark:text-white mb-3">Brand Partnerships</h3>
-                        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                            Amplify your brand's reach by partnering with us. Showcase your products to our highly engaged audience of food enthusiasts.
-                        </p>
-                        <a href="#partnerships" class="font-bold text-red-600 hover:text-red-800 dark:hover:text-red-400 transition duration-300">Partner With Us <i class="fas fa-arrow-right ml-1"></i></a>
-                    </div>
+    <section class="section about" id="about">
+        <div class="container">
+            <h2 class="section-title">About Our Platform</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>Our platform has grown into one of the most trusted culinary education channels on YouTube, reaching over 200,000 dedicated subscribers worldwide.</p>
+                    
+                    <p>We specialize in authentic Ethiopian cuisine while exploring international flavors. Each video combines traditional cooking methods with modern techniques, ensuring you learn not just recipes, but the cultural stories behind every dish.</p>
+                    
+                    <p>Beyond YouTube, we offer premium live cooking classes, strategic brand partnerships, and comprehensive culinary consulting services for businesses and individuals alike.</p>
+                </div>
+                
+                <div class="about-image">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Expert Culinary Instruction</h3>
+                    <p>Traditional recipes meet modern techniques</p>
                 </div>
             </div>
-        </section>
-        
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="py-24 px-6 md:px-12 bg-red-700 text-white">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-serif font-bold mb-4 reveal">From Our Community</h2>
-                <div class="section-divider bg-white reveal"></div>
-                <div id="testimonial-container" class="relative h-48 flex items-center justify-center">
-                    <div class="testimonial-item active">
-                        <p class="text-2xl italic mb-4">"Yemiten's recipes have completely transformed my cooking. The Doro Wat is a family favorite!"</p>
-                        <p class="font-bold text-red-200">- Lia T.</p>
-                    </div>
-                    <div class="testimonial-item">
-                        <p class="text-2xl italic mb-4">"I never thought I could make Injera at home. The instructions were so clear and easy to follow. Thank you!"</p>
-                        <p class="font-bold text-red-200">- Abebe D.</p>
-                    </div>
-                    <div class="testimonial-item">
-                        <p class="text-2xl italic mb-4">"The online classes are fantastic. I've learned so much about both Ethiopian and other international cuisines."</p>
-                        <p class="font-bold text-red-200">- Hana G.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Partnerships Section -->
-        <section id="partnerships" class="py-24 px-6 md:px-12 bg-white dark:bg-gray-900">
-            <div class="max-w-5xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 dark:text-white mb-4 reveal">Partner With Yemiten</h2>
-                <div class="section-divider reveal"></div>
-                <p class="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto mb-12 reveal">
-                    We collaborate with brands that share our passion for quality ingredients and culinary exploration. Partnering with us means connecting with a dedicated community of over 200,000 food lovers in an authentic and meaningful way.
-                </p>
-                <div class="grid md:grid-cols-2 gap-8 text-left reveal-group">
-                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg reveal">
-                        <h3 class="text-2xl font-serif font-bold text-gray-800 dark:text-white mb-3">Product Integration</h3>
-                        <p>Seamlessly feature your products in our high-quality recipe videos and reach an engaged audience ready to try new things.</p>
+    <section class="section services" id="services">
+        <div class="container">
+            <h2 class="section-title">Our Premium Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fab fa-youtube"></i>
                     </div>
-                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg reveal">
-                        <h3 class="text-2xl font-serif font-bold text-gray-800 dark:text-white mb-3">Sponsored Content</h3>
-                        <p>Collaborate on dedicated videos, from special recipe series to product launch showcases, crafted to resonate with our viewers.</p>
-                    </div>
+                    <h3>YouTube Content Creation</h3>
+                    <p>High-quality cooking tutorials featuring Ethiopian and international recipes, professionally produced and watched by over 200,000 subscribers worldwide with millions of total views.</p>
                 </div>
-                <div class="mt-12 reveal">
-                    <a href="#contact" class="btn-gradient text-white font-bold py-4 px-10 rounded-full shadow-lg text-lg">
-                        Start a Conversation
-                    </a>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Live Cooking Masterclasses</h3>
+                    <p>Interactive online cooking sessions with real-time instruction, personalized guidance from expert chefs, and exclusive access to traditional techniques and family recipes.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Strategic Brand Partnerships</h3>
+                    <p>Premium collaborations with food brands and kitchen equipment companies featuring authentic product integration, sponsored content, and comprehensive marketing campaigns.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Quick Recipe Suggester Section -->
-        <section id="recipes-suggester" class="py-24 px-6 md:px-12 bg-gray-50 dark:bg-black/20">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 dark:text-white mb-4 reveal">Need a Recipe Idea?</h2>
-                <div class="section-divider reveal"></div>
-                <p class="text-lg text-gray-700 dark:text-gray-300 mb-10 reveal">
-                    Tell us what you have, and our AI chef will suggest a delicious recipe for you!
-                </p>
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 md:p-12 reveal">
-                    <div class="space-y-6">
-                        <div>
-                            <label for="ingredients" class="block text-left font-medium mb-2">Ingredients you have (e.g., chicken, tomatoes)</label>
-                            <input type="text" id="ingredients" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md focus:ring-2 focus:ring-red-500 transition duration-300">
-                        </div>
-                        <div class="grid sm:grid-cols-2 gap-6">
-                            <div>
-                                <label for="cuisine" class="block text-left font-medium mb-2">Cuisine (Optional)</label>
-                                <select id="cuisine" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md focus:ring-2 focus:ring-red-500 transition duration-300">
-                                    <option value="">Any</option>
-                                    <option value="Ethiopian">Ethiopian</option>
-                                    <option value="Italian">Italian</option>
-                                    <option value="Mexican">Mexican</option>
-                                    <option value="Indian">Indian</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="mealType" class="block text-left font-medium mb-2">Meal Type (Optional)</label>
-                                <select id="mealType" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md focus:ring-2 focus:ring-red-500 transition duration-300">
-                                    <option value="">Any</option>
-                                    <option value="Breakfast">Breakfast</option>
-                                    <option value="Lunch">Lunch</option>
-                                    <option value="Dinner">Dinner</option>
-                                    <option value="Dessert">Dessert</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button id="getRecipeBtn" class="btn-gradient text-white font-bold py-3 px-8 rounded-full shadow-lg w-full sm:w-auto">
-                            <i class="fas fa-magic mr-2"></i><span>Suggest Recipe</span>
-                        </button>
-                    </div>
-                    <div id="recipeResult" class="mt-8 text-left min-h-[100px] relative">
-                         <div id="loadingIndicator" class="absolute inset-0 flex-col items-center justify-center text-red-600 hidden">
-                            <i class="fas fa-spinner fa-spin text-3xl"></i>
-                            <p class="mt-2 text-gray-600 dark:text-gray-400">Our AI chef is thinking...</p>
-                        </div>
-                    </div>
+    <section class="section classes" id="classes">
+        <div class="container">
+            <h2 class="section-title">Premium Cooking Classes</h2>
+            <div class="classes-grid">
+                <div class="class-card popular">
+                    <div class="badge">Most Popular</div>
+                    <h3>Ethiopian Cuisine Mastery</h3>
+                    <ul class="features">
+                        <li>Traditional injera making techniques</li>
+                        <li>5 authentic Ethiopian stews & dishes</li>
+                        <li>Secret spice blend preparation</li>
+                        <li>Cultural context and history lessons</li>
+                        <li>Live Q&A sessions with chef</li>
+                        <li>Premium recipe booklet included</li>
+                        <li>Certificate of completion</li>
+                        <li>Lifetime access to recordings</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Get Quote</a>
+                </div>
+                
+                <div class="class-card">
+                    <h3>International Fusion Mastery</h3>
+                    <ul class="features">
+                        <li>Global flavor combinations</li>
+                        <li>Advanced cooking techniques</li>
+                        <li>Professional menu planning</li>
+                        <li>Presentation & plating skills</li>
+                        <li>Premium equipment recommendations</li>
+                        <li>Recipe modifications & scaling</li>
+                        <li>Business cooking strategies</li>
+                        <li>Access to private community</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Get Quote</a>
+                </div>
+                
+                <div class="class-card">
+                    <h3>Private Chef Sessions</h3>
+                    <ul class="features">
+                        <li>One-on-one expert instruction</li>
+                        <li>Completely customized curriculum</li>
+                        <li>Flexible scheduling worldwide</li>
+                        <li>Personal recipe collection development</li>
+                        <li>Ongoing follow-up support</li>
+                        <li>Dietary restrictions accommodated</li>
+                        <li>VIP community access</li>
+                        <li>Exclusive masterclass invitations</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Book Consultation</a>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="py-24 px-6 md:px-12 bg-white dark:bg-gray-900">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 dark:text-white mb-4 reveal">Get in Touch</h2>
-                <div class="section-divider reveal"></div>
-                <p class="text-lg text-gray-700 dark:text-gray-300 mb-10 reveal">
-                    For partnerships, class inquiries, or just to say hello - we'd love to hear from you!
-                </p>
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 md:p-12 text-left reveal">
-                    <form action="#" method="POST" class="space-y-6">
-                        <div class="grid sm:grid-cols-2 gap-6">
-                            <div>
-                                <label for="name" class="block font-medium mb-2">Name</label>
-                                <input type="text" id="name" name="name" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md focus:ring-2 focus:ring-red-500 transition" required>
-                            </div>
-                            <div>
-                                <label for="email" class="block font-medium mb-2">Email</label>
-                                <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md focus:ring-2 focus:ring-red-500 transition" required>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="message" class="block font-medium mb-2">Message</label>
-                            <textarea id="message" name="message" rows="5" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md focus:ring-2 focus:ring-red-500 transition" required></textarea>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn-gradient text-white font-bold py-3 px-8 rounded-full shadow-lg">Send Message</button>
-                        </div>
-                    </form>
+    <section class="section contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Start Your Culinary Journey</h2>
+            <p style="font-size: 1.3rem; opacity: 0.9; margin-bottom: 2rem;">Ready to transform your cooking skills? Get in touch with our team today.</p>
+            
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <input type="text" placeholder="Your Full Name" required>
                 </div>
-            </div>
-        </section>
-    </main>
+                <div class="form-group">
+                    <input type="email" placeholder="Your Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" placeholder="Phone Number (Optional)">
+                </div>
+                <div class="form-group">
+                    <select required>
+                        <option value="">What brings you here?</option>
+                        <option value="learn-cooking">🍳 Learn Cooking Skills</option>
+                        <option value="ethiopian-cuisine">🇪🇹 Ethiopian Cuisine Classes</option>
+                        <option value="international-fusion">🌍 International Fusion Cooking</option>
+                        <option value="private-sessions">👨‍🍳 Private Chef Sessions</option>
+                        <option value="brand-partnership">🤝 Brand Partnership</option>
+                        <option value="content-collaboration">📹 Content Collaboration</option>
+                        <option value="culinary-consulting">💼 Culinary Consulting</option>
+                        <option value="recipe-development">📝 Recipe Development</option>
+                        <option value="cooking-events">🎉 Cooking Events & Workshops</option>
+                        <option value="youtube-collab">📺 YouTube Collaboration</option>
+                        <option value="restaurant-consulting">🏪 Restaurant Consulting</option>
+                        <option value="food-photography">📸 Food Photography</option>
+                        <option value="menu-planning">📋 Menu Planning Services</option>
+                        <option value="other">💭 Other Inquiry</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea rows="5" placeholder="Tell us about your culinary goals and how we can help you achieve them..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </section>
 
-    <!-- Footer Section -->
-    <footer class="bg-gray-900 text-white py-12 px-6 md:px-12">
-        <div class="max-w-6xl mx-auto text-center">
-            <a href="#home">
-                <img src="https://i.postimg.cc/0K7wkZfJ/logo.png" alt="Yemiten Recipe Tube Logo" class="h-14 w-auto object-contain mx-auto mb-6" onerror="this.onerror=null;this.src='https://placehold.co/120x56/c53030/ffffff?text=LOGO';">
-            </a>
-            <p class="text-gray-400 mb-6">Bringing the world's kitchen to yours.</p>
-            <div class="flex justify-center space-x-6 mb-8">
-                <a href="https://www.youtube.com/@YemitenRecipeTube" target="_blank" class="text-gray-400 hover:text-red-500 transition duration-300 text-2xl"><i class="fab fa-youtube"></i></a>
-                <a href="#" class="text-gray-400 hover:text-red-500 transition duration-300 text-2xl"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="text-gray-400 hover:text-red-500 transition duration-300 text-2xl"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-gray-400 hover:text-red-500 transition duration-300 text-2xl"><i class="fab fa-tiktok"></i></a>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">
+                <img src="https://i.postimg.cc/4HXfDTWq/logo.jpg" alt="Logo">
             </div>
-            <p class="text-gray-500 text-sm">&copy; 2025 Yemiten Recipe Tube. All Rights Reserved.</p>
+            <p style="font-size: 1.1rem; opacity: 0.8; margin-bottom: 1rem;">Bringing authentic flavors to kitchens worldwide</p>
+            <div class="social-links">
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.9rem;">© 2024 Premium Culinary Education Platform. All rights reserved.</p>
+            
+            <div class="developer-credit">
+                <span>Crafted with</span>
+                <i class="fas fa-heart"></i>
+                <span>by <strong>MercyEL Tech</strong></span>
+            </div>
         </div>
     </footer>
 
-    <!-- Back to Top Button -->
-    <button id="backToTopBtn" class="fixed bottom-6 right-6 bg-red-600 text-white w-12 h-12 rounded-full shadow-lg hover:bg-red-700 transition duration-300 hidden justify-center items-center z-50">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-    
-    <!-- Recipe Modal -->
-    <div id="recipeModal" class="modal fixed inset-0 bg-black bg-opacity-60 z-[100] flex items-center justify-center p-4 opacity-0 invisible">
-        <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto transform scale-95 -translate-y-10">
-            <!-- Modal content will be injected here -->
-        </div>
-    </div>
-
-
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        
-        // --- Data for Recipes ---
-        const recipes = {
-            'doro-wat': {
-                title: 'Authentic Doro Wat',
-                image: 'https://images.unsplash.com/photo-1604329223835-23423588523a?q=80&w=2070&auto=format&fit=crop',
-                description: 'Doro Wat is a rich, flavorful, and spicy Ethiopian chicken stew that is often considered the national dish of Ethiopia. It\'s characterized by its deep red color, which comes from berbere spice, and the slow cooking process that melds all the flavors together beautifully.',
-                ingredients: [
-                    '3 lbs chicken, cut into pieces', '4 large red onions, finely chopped', '1/2 cup Niter Kibbeh (Ethiopian spiced clarified butter)', '1/4 cup Berbere spice mix', '2 tsp minced garlic', '1 tsp minced ginger', '4 hard-boiled eggs, peeled', 'Salt to taste', '1/4 cup Tej (Ethiopian honey wine), optional'
-                ],
-                instructions: [
-                    'In a large, dry pot, cook the chopped onions over medium heat, stirring constantly for about 20-30 minutes until they are deep brown and have released their moisture.', 'Add the Niter Kibbeh and cook until the onions are soft and caramelized.', 'Stir in the Berbere spice, garlic, and ginger. Cook for 5 minutes, stirring to prevent burning.', 'Add the chicken pieces and stir to coat them well with the spice mixture. Cook for 10 minutes.', 'Add 2 cups of water (and Tej, if using), bring to a boil, then reduce heat, cover, and simmer for 45-60 minutes, or until the chicken is tender.', 'Gently add the hard-boiled eggs to the stew. Make a few small slits in the eggs so they can absorb the sauce.', 'Simmer for another 10 minutes. Season with salt to taste.', 'Serve hot with traditional Injera bread.'
-                ]
-            },
-            'pasta': {
-                title: 'Vibrant Pasta Primavera',
-                image: 'https://images.unsplash.com/photo-1595295333158-4742f28fbd85?q=80&w=2080&auto=format&fit=crop',
-                description: 'Pasta Primavera is a celebration of spring vegetables. This American-Italian dish combines lightly cooked fresh vegetables with pasta in a light, creamy sauce, creating a colorful and satisfying meal.',
-                ingredients: ['1 lb fettuccine or your favorite pasta', '1 cup broccoli florets', '1 cup asparagus, cut into 1-inch pieces', '1 cup cherry tomatoes, halved', '1/2 cup peas (fresh or frozen)', '1 red bell pepper, julienned', '2 cloves garlic, minced', '1/2 cup heavy cream', '1/4 cup grated Parmesan cheese', '2 tbsp olive oil', 'Salt and black pepper to taste', 'Fresh basil for garnish'],
-                instructions: ['Cook pasta according to package directions. Reserve 1 cup of pasta water before draining.', 'While pasta is cooking, heat olive oil in a large skillet over medium-high heat.', 'Add bell pepper, broccoli, and asparagus. Sauté for 3-4 minutes until crisp-tender.', 'Add garlic and cook for another minute until fragrant.', 'Stir in the cherry tomatoes and peas, and cook for 2 minutes.', 'Reduce heat to low. Stir in the heavy cream and Parmesan cheese. Season with salt and pepper.', 'Add the drained pasta to the skillet with the vegetables. Toss to combine, adding reserved pasta water a little at a time if the sauce is too thick.', 'Serve immediately, garnished with fresh basil.']
-            },
-            'injera': {
-                title: 'Mastering Injera',
-                image: 'https://images.unsplash.com/photo-1626501217314-346a45277f97?q=80&w=1974&auto=format&fit=crop',
-                description: 'Injera is the foundation of Ethiopian cuisine. This unique, spongy, sourdough flatbread is made from teff flour and has a slightly sour taste that perfectly complements the rich and spicy stews it is served with.',
-                ingredients: ['2 cups teff flour', '3 cups lukewarm water, plus more as needed', '1/2 tsp active dry yeast (optional, for a faster ferment)', 'Pinch of salt'],
-                instructions: ['In a large bowl, combine the teff flour and 3 cups of lukewarm water. Whisk until smooth. If using yeast, dissolve it in a little warm water and add it to the mixture.', 'Cover the bowl with a clean cloth and let it sit at room temperature to ferment for 1-3 days. You will see bubbles forming and it will develop a sour aroma. The longer it ferments, the more sour it will be.', 'Once fermented, the batter might have a layer of water on top. Gently pour it off.', 'Stir the batter. It should have the consistency of a thin pancake batter. Add a little more water if it\'s too thick. Stir in the salt.', 'Heat a large, non-stick skillet or a traditional mitad over medium heat.', 'Pour about 1 cup of batter onto the skillet in a spiral motion, starting from the outside and working your way to the center.', 'Cook for about 2-3 minutes, until you see many small holes (eyes) form on the surface. Do not flip it.', 'Cover the skillet with a lid and cook for another minute until the edges lift slightly and the surface is dry.', 'Carefully remove the injera and let it cool on a clean cloth. Repeat with the remaining batter.']
-            }
-        };
+        // Enhanced mobile menu functionality with scroll detection
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const header = document.querySelector('.header');
 
-        // --- Theme Management ---
-        const themeToggle = document.getElementById('theme-toggle');
-        const htmlEl = document.documentElement;
-
-        // Apply theme from localStorage
-        if (localStorage.getItem('theme') === 'dark') {
-            htmlEl.classList.add('dark');
+        function closeMobileMenu() {
+            mobileMenuOverlay.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            document.body.classList.remove('menu-open');
+            mobileMenu.querySelector('i').className = 'fas fa-bars';
         }
 
-        themeToggle.addEventListener('click', () => {
-            htmlEl.classList.toggle('dark');
-            localStorage.setItem('theme', htmlEl.classList.contains('dark') ? 'dark' : 'light');
+        mobileMenu.addEventListener('click', () => {
+            mobileMenuOverlay.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+            const icon = mobileMenu.querySelector('i');
+            
+            if (mobileMenuOverlay.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
+            }
         });
-        
-        // --- General UI & Navigation ---
-        const header = document.getElementById('main-header');
-        const backToTopBtn = document.getElementById('backToTopBtn');
-        const progressBar = document.getElementById('progressBar');
 
+        // Close mobile menu when clicking on links
+        mobileMenuOverlay.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                closeMobileMenu();
+            }
+        });
+
+        // Auto-close mobile menu on scroll
+        let scrollTimeout;
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) header.classList.add('header-scrolled');
-            else header.classList.remove('header-scrolled');
-            
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.remove('hidden');
-                backToTopBtn.classList.add('flex');
-            } else {
-                backToTopBtn.classList.add('hidden');
-                backToTopBtn.classList.remove('flex');
+            if (mobileMenuOverlay.classList.contains('active')) {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    closeMobileMenu();
+                }, 100);
             }
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            progressBar.style.width = ((winScroll / height) * 100) + "%";
         });
 
-        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-        // --- Mobile Menu ---
-        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-
-        function toggleMenu() {
-            const isOpen = mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== '0px';
-            
-            if (isOpen) {
-                mobileMenu.style.maxHeight = '0px';
-                mobileMenuToggle.innerHTML = '<i class="fas fa-bars text-2xl"></i>';
-            } else {
-                mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
-                mobileMenuToggle.innerHTML = '<i class="fas fa-times text-2xl"></i>';
-            }
-        }
-
-        mobileMenuToggle.addEventListener('click', toggleMenu);
-
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
+        // Premium smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const targetId = link.getAttribute('href');
-                document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
-                
-                // Close menu after clicking a link
-                if (mobileMenu.style.maxHeight && mobileMenu.style.maxHeight !== '0px') {
-                    toggleMenu();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerHeight = header.offsetHeight;
+                    const targetPosition = target.offsetTop - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
                 }
             });
         });
 
-        // --- Intersection Observer for animations ---
+        // Premium header scroll effects
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Premium form submission with validation
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalHTML = submitBtn.innerHTML;
+            
+            // Show premium loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending Message...';
+            submitBtn.disabled = true;
+            
+            // Simulate premium form submission
+            setTimeout(() => {
+                // Show success message
+                const successMsg = document.createElement('div');
+                successMsg.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(135deg, #27ae60, #2ecc71);
+                    color: white;
+                    padding: 2rem 3rem;
+                    border-radius: 20px;
+                    box-shadow: 0 20px 60px rgba(39, 174, 96, 0.3);
+                    z-index: 10000;
+                    text-align: center;
+                    font-weight: 600;
+                    font-size: 1.1rem;
+                    animation: fadeInUp 0.5s ease-out;
+                `;
+                successMsg.innerHTML = `
+                    <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 1rem; display: block;"></i>
+                    Thank you for your inquiry!<br>
+                    <span style="opacity: 0.9; font-weight: 400;">We'll contact you within 24 hours to discuss your culinary journey.</span>
+                `;
+                
+                document.body.appendChild(successMsg);
+                
+                // Remove success message after 5 seconds
+                setTimeout(() => {
+                    successMsg.remove();
+                }, 5000);
+                
+                // Reset form
+                this.reset();
+                submitBtn.innerHTML = originalHTML;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        // Premium intersection observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
-                    observer.unobserve(entry.target);
+                    entry.target.style.animationPlayState = 'running';
                 }
             });
-        }, { threshold: 0.1 });
+        }, observerOptions);
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        
-        // --- Testimonial Rotator ---
-        const testimonials = document.querySelectorAll('.testimonial-item');
-        let currentTestimonial = 0;
-        if (testimonials.length > 0) {
-            function showNextTestimonial() {
-                testimonials[currentTestimonial].classList.remove('active');
-                currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-                testimonials[currentTestimonial].classList.add('active');
-            }
-            testimonials[0].classList.add('active');
-            setInterval(showNextTestimonial, 5000);
-        }
-
-        // --- Recipe Modal Logic ---
-        const recipeModal = document.getElementById('recipeModal');
-        const viewRecipeBtns = document.querySelectorAll('.view-recipe-btn');
-        
-        function openModal(recipeId) {
-            const recipe = recipes[recipeId];
-            if (!recipe) return;
-
-            const modalContentHTML = `
-                <div class="p-6 md:p-8 relative">
-                    <button class="close-modal-btn absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white text-2xl z-10">&times;</button>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div>
-                            <img src="${recipe.image}" alt="${recipe.title}" class="rounded-lg shadow-lg w-full h-auto object-cover mb-4">
-                            <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 dark:text-white mb-3">${recipe.title}</h2>
-                            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">${recipe.description}</p>
-                        </div>
-                        <div>
-                            <div class="mb-6">
-                                <h3 class="text-2xl font-serif font-bold text-gray-800 dark:text-white mb-3">Ingredients</h3>
-                                <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
-                                    ${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
-                                </ul>
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-serif font-bold text-gray-800 dark:text-white mb-3">Instructions</h3>
-                                <ol class="list-decimal list-inside text-gray-700 dark:text-gray-300 space-y-3">
-                                    ${recipe.instructions.map(inst => `<li>${inst}</li>`).join('')}
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            recipeModal.querySelector('.modal-content').innerHTML = modalContentHTML;
-            recipeModal.classList.remove('opacity-0', 'invisible');
-            recipeModal.classList.add('is-open');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            recipeModal.classList.add('opacity-0', 'invisible');
-            recipeModal.classList.remove('is-open');
-            document.body.style.overflow = '';
-        }
-
-        viewRecipeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                openModal(btn.dataset.recipeId);
-            });
+        // Observe all animated elements
+        const animatedElements = document.querySelectorAll('.service-card, .class-card, .achievement, .stat');
+        animatedElements.forEach(el => {
+            observer.observe(el);
         });
 
-        recipeModal.addEventListener('click', (e) => {
-            if (e.target === recipeModal || e.target.closest('.close-modal-btn')) {
-                closeModal();
-            }
+        // Add loading animation on page load
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
         });
-
-        // --- AI Recipe Suggester Logic ---
-        document.getElementById('getRecipeBtn').addEventListener('click', async () => {
-            const ingredients = document.getElementById('ingredients').value;
-            const cuisine = document.getElementById('cuisine').value;
-            const mealType = document.getElementById('mealType').value;
-            const recipeResultDiv = document.getElementById('recipeResult');
-            const loadingIndicator = document.getElementById('loadingIndicator');
-
-            recipeResultDiv.innerHTML = ''; // Clear previous result
-            loadingIndicator.classList.remove('hidden');
-            loadingIndicator.classList.add('flex');
-
-            if (!ingredients.trim()) {
-                recipeResultDiv.innerHTML = `<p class="text-red-500 font-medium p-4">Please enter at least one ingredient!</p>`;
-                loadingIndicator.classList.add('hidden');
-                loadingIndicator.classList.remove('flex');
-                return;
-            }
-
-            let prompt = `You are an expert chef. Suggest a creative recipe based on the following. I have these ingredients: ${ingredients}.`;
-            if (cuisine) prompt += ` The cuisine preference is: ${cuisine}.`;
-            if (mealType) prompt += ` The meal type is: ${mealType}.`;
-            prompt += ` Please provide a unique recipe name, a short, enticing description (1-2 sentences), a list of necessary ingredients (bullet points), and a list of step-by-step instructions (numbered steps). Respond ONLY in JSON format according to this schema: { "recipeName": "string", "description": "string", "ingredients": ["string"], "instructions": ["string"] }.`;
-
-            try {
-                const payload = {
-                    contents: [{ role: "user", parts: [{ text: prompt }] }],
-                    generationConfig: {
-                        responseMimeType: "application/json",
-                        responseSchema: {
-                            type: "OBJECT",
-                            properties: {
-                                "recipeName": { "type": "STRING" },
-                                "description": { "type": "STRING" },
-                                "ingredients": { "type": "ARRAY", "items": { "type": "STRING" } },
-                                "instructions": { "type": "ARRAY", "items": { "type": "STRING" } }
-                            },
-                            required: ["recipeName", "description", "ingredients", "instructions"]
-                        }
-                    }
-                };
-                const apiKey = ""; // Provided by the environment
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
-                
-                const result = await response.json();
-
-                if (result.candidates && result.candidates.length > 0) {
-                    const jsonString = result.candidates[0].content.parts[0].text;
-                    const parsedRecipe = JSON.parse(jsonString);
-                    
-                    const recipeHtml = `
-                        <div class="bg-gray-100 dark:bg-gray-700/50 rounded-lg p-6 reveal animate">
-                            <h3 class="text-2xl font-serif font-bold text-red-600 mb-3">${parsedRecipe.recipeName}</h3>
-                            <p class="text-gray-700 dark:text-gray-300 mb-6 italic">${parsedRecipe.description}</p>
-                            <div class="grid md:grid-cols-2 gap-6 text-left">
-                                <div>
-                                    <h4 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Ingredients</h4>
-                                    <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-1">
-                                        ${parsedRecipe.ingredients.map(item => `<li>${item}</li>`).join('')}
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h4 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Instructions</h4>
-                                    <ol class="list-decimal list-inside text-gray-700 dark:text-gray-300 space-y-2">
-                                        ${parsedRecipe.instructions.map(item => `<li>${item}</li>`).join('')}
-                                    </ol>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    recipeResultDiv.innerHTML = recipeHtml;
-                } else {
-                    throw new Error("Could not generate a recipe from the response.");
-                }
-            } catch (error) {
-                console.error("Error fetching recipe:", error);
-                recipeResultDiv.innerHTML = `<p class="text-red-500 font-medium p-4">Sorry, our AI chef is busy. Please try again later.</p>`;
-            } finally {
-                 loadingIndicator.classList.add('hidden');
-                 loadingIndicator.classList.remove('flex');
-            }
-        });
-    });
     </script>
 </body>
 </html>
-
