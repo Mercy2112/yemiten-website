@@ -1219,7 +1219,7 @@
 <body>
     <header class="header">
         <nav class="nav">
-            <a href="#" class="logo">
+            <a href="#home" class="logo">
                 <img src="https://i.postimg.cc/4HXfDTWq/logo.jpg" alt="Logo">
             </a>
             <ul class="nav-links">
@@ -1651,8 +1651,33 @@
             observer.observe(el);
         });
 
-        // Add loading animation on page load
+        // Smooth scroll to top when page loads
         window.addEventListener('load', () => {
+            // Smooth scroll to home section on page load
+            const homeSection = document.getElementById('home');
+            if (homeSection && window.location.hash === '') {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+            
+            // Handle direct hash navigation on page load
+            if (window.location.hash) {
+                setTimeout(() => {
+                    const target = document.querySelector(window.location.hash);
+                    if (target) {
+                        const headerHeight = header.offsetHeight;
+                        const targetPosition = target.offsetTop - headerHeight;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 100);
+            }
+            
+            // Page load animation
             document.body.style.opacity = '0';
             document.body.style.transition = 'opacity 0.5s ease';
             setTimeout(() => {
